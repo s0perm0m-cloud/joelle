@@ -5,7 +5,8 @@
   channel = "stable-24.05"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    pkgs.nodejs_20
+    pkgs.nodejs_20,
+    pkgs.python3
   ];
   # Sets environment variables in the workspace
   env = {};
@@ -20,16 +21,20 @@
       onCreate = {
         npm-install = "npm i --no-audit --no-progress --timing";
         # Open editors for the following files by default, if they exist:
-        default.openFiles = [ "src/App.tsx" "src/App.ts" "src/App.jsx" "src/App.js" ];
+        default.openFiles = [ "src/App.tsx", "src/App.ts", "src/App.jsx", "src/App.js" ];
       };
       # To run something each time the workspace is (re)started, use the `onStart` hook
+       onStart = {
+        # Example: start a background task to watch and re-build backend code
+        # watch-backend = "npm run watch-backend";
+      };
     };
     # Enable previews and customize configuration
     previews = {
       enable = true;
       previews = {
         web = {
-          command = ["npm" "run" "dev" "--" "--port" "$PORT" "--host" "0.0.0.0"];
+          command = ["npm", "run", "dev", "--", "--port", "$PORT", "--host", "0.0.0.0"];
           manager = "web";
         };
       };
